@@ -1,5 +1,4 @@
 import tkinter as tk
-from dados import adicionar_csv, criar_csv
 
 
 class View(tk.Tk):
@@ -7,7 +6,6 @@ class View(tk.Tk):
         super().__init__()
         self.title("Gerenciador de Repertórios")
         self.iniciar()
-        self.nome_do_arquivo = 'banco_de_dados.csv'
 
     def iniciar(self):
         tamLetra = 20
@@ -23,39 +21,27 @@ class View(tk.Tk):
 
         entradas = tk.Frame(area_de_trabalho)
         tNome = tk.Label(entradas, text="Título", font=('', tamLetra))
-        self.eNome = tk.Entry(entradas, font=('', tamLetra), textvariable=self.nomeVar)
+        eNome = tk.Entry(entradas, font=('', tamLetra), textvariable=self.nomeVar)
         tArtista = tk.Label(entradas, text="Artísta", font=('', tamLetra))
-        self.eArtista = tk.Entry(entradas, font=('', tamLetra), textvariable=self.artistaVar)
+        eArtista = tk.Entry(entradas, font=('', tamLetra), textvariable=self.artistaVar)
         tTom = tk.Label(entradas, text="Tom", font=('', tamLetra))
-        self.eTom = tk.Entry(entradas, font=('', tamLetra), textvariable=self.tomVar)
+        eTom = tk.Entry(entradas, font=('', tamLetra), textvariable=self.tomVar)
 
         entradas.grid(row=1, column=0)
         tNome.grid(row=0, column=0)
-        self.eNome.grid(row=0, column=1)
+        eNome.grid(row=0, column=1)
         tArtista.grid(row=1, column=0)
-        self.eArtista.grid(row=1, column=1)
+        eArtista.grid(row=1, column=1)
         tTom.grid(row=2, column=0)
-        self.eTom.grid(row=2, column=1)
+        eTom.grid(row=2, column=1)
 
         botoes = tk.Frame(area_de_trabalho)
-        bAdicionar = tk.Button(botoes, text='Adicionar', font=('', tamLetra), command=self.adicionar)
-        bLimpar = tk.Button(botoes, text='Limpar', font=('', tamLetra), command=self.limpar)
+        self.bAdicionar = tk.Button(botoes, text='Adicionar', font=('', tamLetra))
+        self.bLimpar = tk.Button(botoes, text='Limpar', font=('', tamLetra))
 
         botoes.grid(row=2, column=0)
-        bAdicionar.grid(row=0, column=0)
-        bLimpar.grid(row=0, column=1)
-
-    def adicionar(self):
-        nome = self.eNome.get()
-        artista = self.eArtista.get()
-        tom = self.eTom.get()
-        adicionar_csv(self.nome_do_arquivo, [nome, artista, tom])
-        self.nomeVar.set('')
-        self.artistaVar.set('')
-        self.tomVar.set('')
-
-    def limpar(self):
-        criar_csv(self.nome_do_arquivo, ['Nome', 'Artísta', 'Tom'])
+        self.bAdicionar.grid(row=0, column=0)
+        self.bLimpar.grid(row=0, column=1)
 
 if __name__ == "__main__":
     tela = View()
