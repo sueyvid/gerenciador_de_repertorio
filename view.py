@@ -48,12 +48,13 @@ class View(tk.Tk):
         eRitmo.grid(row=4, column=1)
 
         botoes = tk.Frame(area_de_entrada)
-        self.bAdicionar = tk.Button(botoes, text='Adicionar', font=('', tamLetra))
-        self.bLimpar = tk.Button(botoes, text='Limpar', font=('', tamLetra))
-
         botoes.grid(row=2, column=0)
+        self.bAdicionar = tk.Button(botoes, text='Adicionar', font=('', tamLetra))
         self.bAdicionar.grid(row=0, column=0)
-        self.bLimpar.grid(row=0, column=1)
+        self.bRemover = tk.Button(botoes, text='Remover', font=('', tamLetra))
+        self.bRemover.grid(row=0, column=1)
+        self.bLimpar = tk.Button(botoes, text='Limpar', font=('', tamLetra))
+        self.bLimpar.grid(row=0, column=2)
 
         self.tv = ttk.Treeview(area_de_trabalho, columns=self.colunas, show='headings')
         for i in self.colunas:
