@@ -19,13 +19,16 @@ class Controller:
         nome = self.view.nomeVar.get()
         artista = self.view.artistaVar.get()
         tom = self.view.tomVar.get()
-        self.model.adicionar_csv(self.nome_do_arquivo, [nome, artista, tom])
+        ritmo = self.view.ritmoVar.get()
+        self.model.adicionar_csv(self.nome_do_arquivo, [nome, artista, tom, ritmo])
         self.view.nomeVar.set('')
         self.view.artistaVar.set('')
         self.view.tomVar.set('')
+        self.view.ritmoVar.set('')
 
     def limpar(self):
-        self.model.criar_csv(self.nome_do_arquivo, ['Nome', 'Artísta', 'Tom'])
+        col = self.view.colunas
+        self.model.criar_csv(self.nome_do_arquivo, col)
 
 if __name__ == '__main__':
     v = View()
