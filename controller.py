@@ -3,6 +3,12 @@ from model import Model
 import tkinter as tk
 
 
+#TODO: Opção de escolher base de dados
+#TODO: Fazer cópia da base de dados
+#TODO: Opção de salvar base de dados
+#TODO: Treeview do repertório
+
+
 class Controller:
     def __init__(self, view, model):
         self.view = view
