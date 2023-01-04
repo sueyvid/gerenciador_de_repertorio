@@ -10,15 +10,17 @@ class View(tk.Tk):
         self.iniciar()
 
     def iniciar(self):
+        # Area de trabalho
         tamLetra = 20
         area_de_trabalho = tk.Frame(self)
         area_de_trabalho.pack()
 
+        # Area de entrada
         area_de_entrada = tk.Frame(area_de_trabalho)
         area_de_entrada.grid(row=0, column=0)
 
-        tTituloPagina = tk.Label(area_de_entrada, text="Nova Música", font=('', tamLetra))
-        tTituloPagina.grid(row=0, column=0, sticky='WE')
+        tTituloEntrada = tk.Label(area_de_entrada, text="Nova Música", font=('', tamLetra))
+        tTituloEntrada.grid(row=0, column=0, sticky='WE')
         
         entradas = tk.Frame(area_de_entrada)
         entradas.grid(row=1, column=0)
@@ -56,10 +58,22 @@ class View(tk.Tk):
         self.bLimpar = tk.Button(botoes, text='Limpar', font=('', tamLetra))
         self.bLimpar.grid(row=0, column=2)
 
+        # Área de arquivo
+        area_de_arquivo = tk.Frame(area_de_trabalho)
+        area_de_arquivo.grid(row=0, column=1)
+        tTituloArquivo = tk.Label(area_de_arquivo, text="Escolher Arquivo", font=('', tamLetra))
+        tTituloArquivo.grid(row=0, column=0)
+        self.arquivoVar = tk.StringVar(value='nome do arquivo')
+        nome_do_arquivo = tk.Label(area_de_arquivo, textvariable=self.arquivoVar, font=('', 15))
+        nome_do_arquivo.grid(row=1, column=0)
+        self.bSelecionar = tk.Button(area_de_arquivo, text='Selecionar Arquivo', font=('', tamLetra))
+        self.bSelecionar.grid(row=2, column=0)
+
+        # Área treeview
         self.tv = ttk.Treeview(area_de_trabalho, columns=self.colunas, show='headings')
         for i in self.colunas:
             self.tv.heading(i, text=i)
-        self.tv.grid(row=0, column=1, sticky='NSWE')
+        self.tv.grid(row=1, column=0, sticky='NSWE', columnspan=2)
 
 if __name__ == "__main__":
     tela = View()
