@@ -4,10 +4,6 @@ import tkinter as tk
 from tkinter import filedialog as fd
 
 
-#TODO: Opção de salvar base de dados
-#TODO: Treeview do repertório
-
-
 class Controller:
     def __init__(self, view, model):
         self.view = view
@@ -24,6 +20,33 @@ class Controller:
         bt_Limpar['command'] = self.limpar
         bt_Selecionar = self.view.bSelecionar
         bt_Selecionar['command'] = self.selecionar
+        bt_Salvar = self.view.bSalvar
+        bt_Salvar['command'] = self.salvar
+
+    def salvar(self):
+        filetypes = (
+            ('csv files', '*.csv'),
+            ('All files', '*.*')
+        )
+
+        localfile = fd.asksaveasfilename(
+            confirmoverwrite=True,
+            filetypes=filetypes,
+            initialdir='/Desktop')
+
+        local = self.nome_do_arquivo.split('/')
+        temp = ''
+        for i in local[:-2]:
+            temp += f'{i}/'
+        temp += 'temp.csv'
+        # print(self.model.ler_csv(s))
+
+        conteudo = self.model.ler_csv(temp)
+        col = self.view.colunas
+        self.model.criar_csv(self.nome_do_arquivo, col)
+        for linha in conteudo[1:]:
+            self.model.adicionar_csv(self.nome_do_arquivo, linha)
+
 
     def selecionar(self):
         filetypes = (
@@ -31,16 +54,17 @@ class Controller:
             ('All files', '*.*')
         )
 
-        filename = fd.askopenfilename(
+        localfile = fd.askopenfilename(
             title='Open a file',
-            initialdir='../gerenciador_repertorio/dados',
+            initialdir='/Desktop',
             filetypes=filetypes)
 
-        if filename:
-            filename = filename.split('/')[-1]
-            self.nome_do_arquivo = f'../gerenciador_repertorio/dados/{filename}'
+        if localfile:
+            filename = localfile.split('/')[-1]
+            self.nome_do_arquivo = f'{localfile}'
             self.recupera_dados()
             self.view.arquivoVar.set(value=f'nome do arquivo: {filename}')
+            self.view.bSalvar['state'] = tk.NORMAL
 
     def recupera_dados(self):
         musicas = self.model.ler_csv(self.nome_do_arquivo)
@@ -78,6 +102,9 @@ class Controller:
         nome_do_arquivo = 'temp.csv'
         col = self.view.colunas
         self.model.criar_csv(nome_do_arquivo, col)
+        tv = self.view.tv
+        for i in tv.get_children():
+            tv.delete(i)
 
 if __name__ == '__main__':
     v = View()

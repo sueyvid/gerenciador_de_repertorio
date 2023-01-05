@@ -68,6 +68,9 @@ class View(tk.Tk):
         nome_do_arquivo.grid(row=1, column=0)
         self.bSelecionar = tk.Button(area_de_arquivo, text='Selecionar Arquivo', font=('', tamLetra))
         self.bSelecionar.grid(row=2, column=0)
+        self.bSalvar = ttk.Button(area_de_arquivo, text='Salvar Arquivo')
+        self.bSalvar.grid(row=3, column=0)
+        self.bSalvar.state(['disabled'])
 
         # Área treeview
         self.tv = ttk.Treeview(area_de_trabalho, columns=self.colunas, show='headings')

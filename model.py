@@ -44,8 +44,9 @@ class Model:
     
 if __name__ == '__main__':
     m = Model()
-    m.criar_csv('banco_de_dados.csv', ['Slot 1', 'Slot 2', 'Slot 3'])
-    m.adicionar_csv('banco_de_dados.csv', ['Slot 1', 'Slot 2', 'Slot 4'])
-    m.adicionar_csv('banco_de_dados.csv', ['Slot 1', 'Slot 2', 'Slot 5'])
-    print(m.ler_csv('banco_de_dados.csv'))
-    m.remover_linha_csv('banco_de_dados.csv', 0)
+    # m.criar_csv('banco_de_dados.csv', ['Slot 1', 'Slot 2', 'Slot 3'])
+    # m.adicionar_csv('banco_de_dados.csv', ['Slot 1', 'Slot 2', 'Slot 4'])
+    # m.adicionar_csv('banco_de_dados.csv', ['Slot 1', 'Slot 2', 'Slot 5'])
+    # print(m.ler_csv('banco_de_dados.csv'))
+    # m.remover_linha_csv('banco_de_dados.csv', 0)
+    # m.criar_csv(r'C:\Users\suelt\OneDrive\Documentos\codigos\gerenciador_repertorio\dados\teste.txt', ['teste'])
