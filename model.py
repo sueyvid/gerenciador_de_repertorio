@@ -41,7 +41,26 @@ class Model:
         self.criar_csv(nome_do_arquivo, texto[0])
         for i in texto[1:]:
             self.adicionar_csv(nome_do_arquivo, i)
+
+    def adicionar_cabecalho_csv(self, nome_do_arquivo, colunas):
+        texto = self.ler_csv(nome_do_arquivo)
+        self.criar_csv(nome_do_arquivo, colunas)
+        for linha in texto:
+            self.adicionar_csv(nome_do_arquivo, linha)
     
+    def alterar_cabecalho_csv(self, nome_do_arquivo, colunas):
+        self.remover_linha_csv(0)
+        self.adicionar_cabecalho_csv(nome_do_arquivo, colunas)
+        
+    def copiar_conteudo_csv(self, nome_do_arquivo_copiado, nome_do_arquivo_substituido):
+        conteudo = self.ler_csv(nome_do_arquivo_copiado)
+        self.criar_csv(nome_do_arquivo_substituido, conteudo[0])
+        for linha in conteudo[1:]:
+            self.adicionar_csv(nome_do_arquivo_substituido, linha)
+    
+    def reescrever_conteudo_csv(self, nome_do_arquivo, colunas):
+        self.criar_csv(nome_do_arquivo, colunas)
+
 if __name__ == '__main__':
     m = Model()
     # m.criar_csv('banco_de_dados.csv', ['Slot 1', 'Slot 2', 'Slot 3'])
@@ -50,3 +69,4 @@ if __name__ == '__main__':
     # print(m.ler_csv('banco_de_dados.csv'))
     # m.remover_linha_csv('banco_de_dados.csv', 0)
     # m.criar_csv(r'C:\Users\suelt\OneDrive\Documentos\codigos\gerenciador_repertorio\dados\teste.txt', ['teste'])
+    m.limpar_conteudo_csv('temp.csv')

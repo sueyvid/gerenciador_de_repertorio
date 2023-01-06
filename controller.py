@@ -36,13 +36,7 @@ class Controller:
             confirmoverwrite=True,
             filetypes=self.filetypes,
             initialdir=self.local_do_arquivo)
-
-        # TODO: lê um arquivo, escreve outro e adiciona na treeview (fazer função no model)
-        conteudo = self.model.ler_csv(self.arquivo_temp)
-        col = self.view.colunas
-        self.model.criar_csv(self.arquivo_raiz, col)
-        for linha in conteudo[1:]:
-            self.model.adicionar_csv(self.arquivo_raiz, linha)
+        self.model.copiar_conteudo_csv(self.arquivo_temp, self.arquivo_raiz)
 
     def selecionar(self):
         '''Abre uma caixa de diálogo para selecionar um arquivo csv com os dados'''
@@ -95,8 +89,7 @@ class Controller:
 
     def limpar(self):
         '''reseta o arquivo csv e apaga todos os dados da treeview'''
-        col = self.view.colunas
-        self.model.criar_csv(self.arquivo_temp, col)
+        self.model.reescrever_conteudo_csv(self.arquivo_temp, self.view.colunas)
         tv = self.view.tv
         for i in tv.get_children():
             tv.delete(i)
