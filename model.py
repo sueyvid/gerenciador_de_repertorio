@@ -35,6 +35,9 @@ class Model:
                 texto.append(row)
         return texto
 
+    def retorna_linha_csv(self, nome_do_arquivo, linha):
+        return self.ler_csv(nome_do_arquivo)[linha]
+
     def remover_linha_csv(self, nome_do_arquivo, linha):
         texto = self.ler_csv(nome_do_arquivo)
         texto.pop(linha)
@@ -69,4 +72,4 @@ if __name__ == '__main__':
     # print(m.ler_csv('banco_de_dados.csv'))
     # m.remover_linha_csv('banco_de_dados.csv', 0)
     # m.criar_csv(r'C:\Users\suelt\OneDrive\Documentos\codigos\gerenciador_repertorio\dados\teste.txt', ['teste'])
-    m.limpar_conteudo_csv('temp.csv')
+    print(m.retorna_linha_csv('temp.csv', 1))

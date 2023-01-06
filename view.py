@@ -76,10 +76,22 @@ class View(tk.Tk):
         self.bSalvar.state(['disabled'])
 
         # Área treeview
-        self.tv = ttk.Treeview(area_de_trabalho, columns=self.colunas, show='headings')
+        self.tv_dados = ttk.Treeview(area_de_trabalho, columns=self.colunas, show='headings')
         for i in self.colunas:
-            self.tv.heading(i, text=i)
-        self.tv.grid(row=1, column=0, sticky='NSWE', columnspan=2)
+            self.tv_dados.heading(i, text=i)
+        self.tv_dados.grid(row=1, column=0, sticky='NSWE', columnspan=2)
+
+        self.tv_repertorio = ttk.Treeview(area_de_trabalho, columns=self.colunas, show='headings')
+        for i in self.colunas:
+            self.tv_repertorio.heading(i, text=i)
+        self.tv_repertorio.grid(row=2, column=0, sticky='NSWE', columnspan=2)
+
+        self.bSubir = ttk.Button(area_de_trabalho, text='⬆')
+        self.bSubir.grid(row=3, column=0)
+        self.bDescer = ttk.Button(area_de_trabalho, text='⬇')
+        self.bDescer.grid(row=3, column=1)
+        self.bGerar = ttk.Button(area_de_trabalho, text='Gerar')
+        self.bGerar.grid(row=4, column=0, columnspan=2)
 
 if __name__ == "__main__":
     tela = View()
