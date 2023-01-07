@@ -9,12 +9,16 @@ class Controller:
     def __init__(self, view, model):
         self.view = view
         self.model = model
+        self.entradas = [self.view.nomeVar,
+                    self.view.artistaVar,
+                    self.view.tomVar,
+                    self.view.ritmoVar]
         self.config_os()
         self.config_botoes()
 
     def config_os(self):
-        self.nome_do_arquivo = 'banco_de_dados.csv'
-        self.arquivo_raiz = r'C:\Users\suelt\OneDrive\Documentos\codigos\gerenciador_repertorio\dados\banco_de_dados.csv'
+        self.nome_do_arquivo = ''
+        self.arquivo_raiz = ''
         self.filetypes = (('csv files', '*.csv'), ('All files', '*.*'))
 
         pasta_raiz = os.getcwd()
@@ -23,8 +27,6 @@ class Controller:
         self.local_do_arquivo = f'{pasta_raiz}/dados'
         if not 'dados' in os.listdir(pasta_raiz):
             os.mkdir(self.local_do_arquivo)
-        self.recupera_dados()
-        self.view.arquivoVar.set(value=f'nome do arquivo: {self.nome_do_arquivo}')
 
     def config_botoes(self):
         arq_temp = self.arquivo_temp
@@ -34,24 +36,33 @@ class Controller:
         mus = self.pegar_dados_entrada
 
         self.view.bAdicionar['command'] = lambda: self.adicionar(arq_temp, tv_dados, mus)
+        self.view.bEditar['command'] = lambda: self.editar(arq_temp, tv_dados, mus)
         self.view.bRemover['command'] = lambda: self.remover(arq_temp, tv_dados)
         self.view.bLimpar['command'] = lambda: self.limpar(arq_temp, tv_dados)
         self.view.bSelecionar['command'] = self.selecionar
         self.view.bSalvar['command'] = self.salvar
         tv_dados.bind('<Double-1>', lambda e: self.mover_musica(e, tv_dados, tv_rep, arq_temp, arq_rep))
         tv_rep.bind('<Double-1>', lambda e: self.mover_musica(e, tv_rep, tv_dados, arq_rep, arq_temp))
+        tv_dados.bind('<ButtonRelease>', self.selecao)
         self.view.bSubir['command'] = lambda: self.mudar_posicao_musica(tv_rep, 'subir')
         self.view.bDescer['command'] = lambda: self.mudar_posicao_musica(tv_rep, 'descer')
+
+    def selecao(self, e):
+        if not self.view.tv_dados.selection():
+            for var in self.entradas:
+                var.set('')
+        else:
+            selecionado = self.view.tv_dados.selection()[0]
+            index = self.view.tv_dados.index(selecionado)
+            texto = self.model.retorna_linha_csv(self.arquivo_temp, index+1)
+            for i, var in enumerate(self.entradas):
+                var.set(texto[i])
 
     # Entrada
     def pegar_dados_entrada(self):
         '''Pega os dados escritos na entrada e os retorna'''
-        entradas = [self.view.nomeVar,
-                    self.view.artistaVar,
-                    self.view.tomVar,
-                    self.view.ritmoVar]
         musica = list()
-        for variavel in entradas:
+        for variavel in self.entradas:
             musica.append(variavel.get())
             variavel.set('')
         return musica
@@ -73,6 +84,17 @@ class Controller:
             else:
                 self.model.adicionar_csv(nome_do_arquivo, musicas)
             tv.insert('', pos, values=musicas)
+
+    def editar(self, nome_do_arquivo, tv, musica):
+        '''adiciona músicas no arquivo e na treeview'''
+        if not isinstance(musica, list):
+            musica = self.pegar_dados_entrada()
+        selecionado = tv.selection()[0]
+        index = tv.index(selecionado)
+        self.model.editar_linha_csv(nome_do_arquivo, musica, index+1)
+        for i in range(4):
+            tv.set(selecionado, self.view.colunas[i], value=musica[i])
+        tv.selection_remove(selecionado)
 
     def remover(self, nome_do_arquivo, tv):
         '''remove música, selecionada pelo usuário, do arquivo e da treeview'''
@@ -100,6 +122,7 @@ class Controller:
             self.arquivo_raiz = local_do_arquivo
             self.recupera_dados()
             self.view.arquivoVar.set(value=f'nome do arquivo: {self.nome_do_arquivo}')
+            self.view.bSalvar['state'] = tk.NORMAL
 
     def salvar(self):
         '''Abre uma caixa de diálogo para salvar o arquivo csv'''

@@ -51,6 +51,14 @@ class Model:
         self.criar_csv(nome_do_arquivo, texto[0])
         for i in texto[1:]:
             self.adicionar_csv(nome_do_arquivo, i)
+    
+    def editar_linha_csv(self, nome_do_arquivo, musica, linha):
+        texto = self.ler_csv(nome_do_arquivo)
+        texto.pop(linha)
+        texto.insert(linha, musica)
+        self.criar_csv(nome_do_arquivo, texto[0])
+        for i in texto[1:]:
+            self.adicionar_csv(nome_do_arquivo, i)
 
     def adicionar_cabecalho_csv(self, nome_do_arquivo, colunas):
         texto = self.ler_csv(nome_do_arquivo)

@@ -53,10 +53,12 @@ class View(tk.Tk):
         botoes.grid(row=2, column=0)
         self.bAdicionar = ttk.Button(botoes, text='Adicionar')
         self.bAdicionar.grid(row=0, column=0)
+        self.bEditar = ttk.Button(botoes, text='Editar')
+        self.bEditar.grid(row=0, column=1)
         self.bRemover = ttk.Button(botoes, text='Remover')
-        self.bRemover.grid(row=0, column=1)
+        self.bRemover.grid(row=0, column=2)
         self.bLimpar = ttk.Button(botoes, text='Limpar')
-        self.bLimpar.grid(row=0, column=2)
+        self.bLimpar.grid(row=0, column=3)
 
         # Área de arquivo
         area_de_arquivo = ttk.Frame(area_de_trabalho)

@@ -4,6 +4,7 @@
 - adicionar no arquivo e na treeview
 - remover do arquivo e da treeview
 - limpar arquivo e treeview
+- editar arquivo e treeview
 ## Arquivos
 - Arquivo selecionado:
   - Pegar nome e localização do arquivo
