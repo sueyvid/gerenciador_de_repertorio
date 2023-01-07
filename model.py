@@ -18,14 +18,21 @@ class Model:
             escritor = csv.writer(csvfile, delimiter=',')
             escritor.writerow(texto)
 
-    def adicionar_csv(self, nome_do_arquivo, texto:list):
+    def adicionar_csv(self, nome_do_arquivo, texto:list, linha='ultima'):
         '''
         Nome do Arquivo: string com a extensão .csv
         Texto: lista de strings
         '''
-        with open(nome_do_arquivo, 'a', newline='', encoding=self.code) as csvfile:
-            escritor = csv.writer(csvfile, delimiter=',')
-            escritor.writerow(texto)
+        if linha == 'ultima':
+            with open(nome_do_arquivo, 'a', newline='', encoding=self.code) as csvfile:
+                escritor = csv.writer(csvfile, delimiter=',')
+                escritor.writerow(texto)
+        else:
+            arquivo = self.ler_csv(nome_do_arquivo)
+            arquivo.insert(linha, texto)
+            self.criar_csv(nome_do_arquivo, arquivo[0])
+            for i in arquivo[1:]:
+                self.adicionar_csv(nome_do_arquivo, i)
 
     def ler_csv(self, nome_do_arquivo):
         texto = list()
@@ -72,4 +79,4 @@ if __name__ == '__main__':
     # print(m.ler_csv('banco_de_dados.csv'))
     # m.remover_linha_csv('banco_de_dados.csv', 0)
     # m.criar_csv(r'C:\Users\suelt\OneDrive\Documentos\codigos\gerenciador_repertorio\dados\teste.txt', ['teste'])
-    print(m.retorna_linha_csv('temp.csv', 1))
+    m.subir_linha_csv('temp.csv', 2)
