@@ -59,6 +59,7 @@ class View(tk.Tk):
         self.bRemover.grid(row=0, column=2)
         self.bLimpar = ttk.Button(botoes, text='Limpar')
         self.bLimpar.grid(row=0, column=3)
+        self.bEditar.state(['disabled'])
 
         # Área de arquivo
         area_de_arquivo = ttk.Frame(area_de_trabalho)

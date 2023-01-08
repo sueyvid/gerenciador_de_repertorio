@@ -47,16 +47,30 @@ class Controller:
         self.view.bSubir['command'] = lambda: self.mudar_posicao_musica(tv_rep, 'subir')
         self.view.bDescer['command'] = lambda: self.mudar_posicao_musica(tv_rep, 'descer')
 
+    def botoes_normal(self):
+        self.view.bAdicionar['state'] = tk.NORMAL
+        self.view.bEditar['state'] = tk.DISABLED
+    
+    def botoes_editando(self):
+        self.view.bAdicionar['state'] = tk.DISABLED
+        self.view.bEditar['state'] = tk.NORMAL
+
     def selecao(self, e):
         if not self.view.tv_dados.selection():
             for var in self.entradas:
                 var.set('')
+            self.botoes_normal()
         else:
             selecionado = self.view.tv_dados.selection()[0]
             index = self.view.tv_dados.index(selecionado)
             texto = self.model.retorna_linha_csv(self.arquivo_temp, index+1)
             for i, var in enumerate(self.entradas):
                 var.set(texto[i])
+            self.botoes_editando()
+
+    def limpar_selecao_tv(self, tv):
+        for i in tv.selection():
+            tv.selection_remove(i)
 
     # Entrada
     def pegar_dados_entrada(self):
@@ -95,6 +109,7 @@ class Controller:
         for i in range(4):
             tv.set(selecionado, self.view.colunas[i], value=musica[i])
         tv.selection_remove(selecionado)
+        self.botoes_normal()
 
     def remover(self, nome_do_arquivo, tv):
         '''remove música, selecionada pelo usuário, do arquivo e da treeview'''
@@ -102,12 +117,14 @@ class Controller:
             index = tv.index(selected_item)
             self.model.remover_linha_csv(nome_do_arquivo, index+1)
             tv.delete(selected_item)
+        self.botoes_normal()
 
     def limpar(self, nome_do_arquivo, tv):
         '''reseta o arquivo e a treeview'''
         self.model.reescrever_conteudo_csv(nome_do_arquivo, self.view.colunas)
         for i in tv.get_children():
             tv.delete(i)
+        self.botoes_normal()
 
     # Arquivo
     def selecionar(self):
@@ -123,6 +140,8 @@ class Controller:
             self.recupera_dados()
             self.view.arquivoVar.set(value=f'nome do arquivo: {self.nome_do_arquivo}')
             self.view.bSalvar['state'] = tk.NORMAL
+            for var in self.entradas:
+                var.set('')
 
     def salvar(self):
         '''Abre uma caixa de diálogo para salvar o arquivo csv'''
@@ -132,6 +151,11 @@ class Controller:
             initialdir=self.local_do_arquivo)
         self.arquivo_raiz = local_do_arquivo
         self.model.copiar_conteudo_csv(self.arquivo_temp, self.arquivo_raiz)
+        for var in self.entradas:
+                var.set('')
+        self.botoes_normal()
+        self.limpar_selecao_tv(self.view.tv_dados)
+        self.limpar_selecao_tv(self.view.tv_repertorio)
 
     def recupera_dados(self):
         '''limpa as treeviews e o arquivo temporário,
