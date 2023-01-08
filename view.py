@@ -79,22 +79,40 @@ class View(tk.Tk):
         self.bSalvar.state(['disabled'])
 
         # Área treeview
-        self.tv_dados = ttk.Treeview(area_de_trabalho, columns=self.colunas, show='headings')
+        tv_frame = ttk.Frame(area_de_trabalho)
+        tv_frame.grid(row=1, column=0, columnspan=2)
+
+        self.tv_dados = ttk.Treeview(tv_frame, columns=self.colunas, show='headings')
         for i in self.colunas:
             self.tv_dados.heading(i, text=i)
-        self.tv_dados.grid(row=1, column=0, sticky='NSWE', columnspan=2)
+        larguras = [200, 150, 100, 100]
+        for i, v in enumerate(self.colunas):
+            self.tv_dados.column(v, width=larguras[i])
+        self.tv_dados.grid(row=0, column=0, sticky='NSWE')
 
-        self.tv_repertorio = ttk.Treeview(area_de_trabalho, columns=self.colunas, show='headings')
+        sb_y = ttk.Scrollbar(tv_frame, orient=tk.VERTICAL, command=self.tv_dados.yview)
+        self.tv_dados.configure(yscroll=sb_y.set)
+        sb_y.grid(row=0, column=1, sticky='NS')
+
+        self.tv_repertorio = ttk.Treeview(tv_frame, columns=self.colunas, show='headings')
         for i in self.colunas:
             self.tv_repertorio.heading(i, text=i)
-        self.tv_repertorio.grid(row=2, column=0, sticky='NSWE', columnspan=2)
+        for i, v in enumerate(self.colunas):
+            self.tv_repertorio.column(v, width=larguras[i])
+        self.tv_repertorio.grid(row=0, column=2, sticky='NSWE')
 
-        self.bSubir = ttk.Button(area_de_trabalho, text='⬆')
-        self.bSubir.grid(row=3, column=0)
-        self.bDescer = ttk.Button(area_de_trabalho, text='⬇')
-        self.bDescer.grid(row=3, column=1)
-        self.bGerar = ttk.Button(area_de_trabalho, text='Gerar')
-        self.bGerar.grid(row=4, column=0, columnspan=2)
+        sb_y = ttk.Scrollbar(tv_frame, orient=tk.VERTICAL, command=self.tv_repertorio.yview)
+        self.tv_repertorio.configure(yscroll=sb_y.set)
+        sb_y.grid(row=0, column=3, sticky='NS')
+
+        modificacoes_frame = ttk.Frame(area_de_trabalho)
+        modificacoes_frame.grid(row=2, column=0, columnspan=2)
+        self.bSubir = ttk.Button(modificacoes_frame, text='⬆')
+        self.bSubir.grid(row=0, column=0)
+        self.bDescer = ttk.Button(modificacoes_frame, text='⬇')
+        self.bDescer.grid(row=0, column=1)
+        self.bGerar = ttk.Button(modificacoes_frame, text='Gerar')
+        self.bGerar.grid(row=1, column=0, columnspan=2)
 
 if __name__ == "__main__":
     tela = View()
