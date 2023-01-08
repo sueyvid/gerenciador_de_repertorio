@@ -41,8 +41,8 @@ class Controller:
         self.view.bLimpar['command'] = lambda: self.limpar(arq_temp, tv_dados)
         self.view.bSelecionar['command'] = self.selecionar
         self.view.bSalvar['command'] = self.salvar
-        tv_dados.bind('<Double-1>', lambda e: self.mover_musica(e, tv_dados, tv_rep, arq_temp, arq_rep))
-        tv_rep.bind('<Double-1>', lambda e: self.mover_musica(e, tv_rep, tv_dados, arq_rep, arq_temp))
+        tv_dados.bind('<Double-1>', lambda e: self.mover_musica(e, tv_dados, tv_rep, arq_temp, arq_rep, 'adicionar'))
+        tv_rep.bind('<Double-1>', lambda e: self.mover_musica(e, tv_rep, tv_dados, arq_rep, arq_temp, 'remover'))
         tv_dados.bind('<ButtonRelease>', self.selecao)
         self.view.bSubir['command'] = lambda: self.mudar_posicao_musica(tv_rep, 'subir')
         self.view.bDescer['command'] = lambda: self.mudar_posicao_musica(tv_rep, 'descer')
@@ -166,12 +166,16 @@ class Controller:
         self.adicionar(self.arquivo_temp, self.view.tv_dados, musicas[1:])
 
     # Treeview
-    def mover_musica(self, event, tv1, tv2, arq1, arq2):
+    def mover_musica(self, event, tv1, tv2, arq1, arq2, tipo):
         for selected_item in tv1.selection():
             index = tv1.index(selected_item)
             musica = self.model.retorna_linha_csv(arq1, index+1)
-            self.remover(arq1, tv1)
-            self.adicionar(arq2, tv2, musica)
+            if tipo == 'adicionar':
+                tv1.delete(selected_item)
+                self.adicionar(arq2, tv2, musica)
+            else:
+                self.remover(arq1, tv1)
+                tv2.insert('', tk.END, value=musica)
 
     def mudar_posicao_musica(self, tv, opcao):
         tam = len(tv.get_children()) - 1
