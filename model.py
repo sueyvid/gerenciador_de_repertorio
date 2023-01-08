@@ -79,6 +79,40 @@ class Model:
     def reescrever_conteudo_csv(self, nome_do_arquivo, colunas):
         self.criar_csv(nome_do_arquivo, colunas)
 
+'''
+Nome: Biblioteca para alterar docx
+Autor: Sueyvid José
+'''
+from docx import Document
+from docx.shared import Pt
+from docx import enum, shared
+
+
+class Docx:
+    def __init__(self):
+        self.document = Document()
+
+    def font_configs(self, name='Calibri', size=12):
+        self.style = self.document.styles['Normal']
+        font = self.style.font
+        font.name = name
+        font.size = Pt(size)
+
+    def paragraph_configs(self):
+        self.style.paragraph_format.line_spacing = 0.5
+        tab_stops = self.style.paragraph_format.tab_stops
+        sec = self.document.sections[0]
+        margin_end = shared.Inches(
+            sec.page_width.inches - (sec.left_margin.inches + sec.right_margin.inches))
+        tab_stops = self.style.paragraph_format.tab_stops
+        tab_stops.add_tab_stop(margin_end, enum.text.WD_TAB_ALIGNMENT.RIGHT)
+
+    def escrever_linha(self, texto):
+        self.document.add_paragraph(texto).add_run()
+
+    def salvar(self, nome):
+        self.document.save(f'{nome}.docx')
+
 if __name__ == '__main__':
     m = Model()
     # m.criar_csv('banco_de_dados.csv', ['Slot 1', 'Slot 2', 'Slot 3'])
@@ -87,4 +121,10 @@ if __name__ == '__main__':
     # print(m.ler_csv('banco_de_dados.csv'))
     # m.remover_linha_csv('banco_de_dados.csv', 0)
     # m.criar_csv(r'C:\Users\suelt\OneDrive\Documentos\codigos\gerenciador_repertorio\dados\teste.txt', ['teste'])
-    m.subir_linha_csv('temp.csv', 2)
+    # m.subir_linha_csv('temp.csv', 2)
+    d = Docx()
+    d.font_configs('Arial', 18)
+    d.paragraph_configs()
+    d.escrever_linha('qualquer coisa\tdb')
+    d.escrever_linha('qualquer coisa\tcd')
+    d.salvar('teste')

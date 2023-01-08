@@ -1,14 +1,15 @@
 from view import View
-from model import Model
+from model import Model, Docx
 import tkinter as tk
 from tkinter import filedialog as fd
 import os
 
 
 class Controller:
-    def __init__(self, view, model):
+    def __init__(self, view, model, docx):
         self.view = view
         self.model = model
+        self.docx = docx
         self.entradas = [self.view.nomeVar,
                     self.view.artistaVar,
                     self.view.tomVar,
@@ -46,6 +47,15 @@ class Controller:
         tv_dados.bind('<ButtonRelease>', self.selecao)
         self.view.bSubir['command'] = lambda: self.mudar_posicao_musica(tv_rep, 'subir')
         self.view.bDescer['command'] = lambda: self.mudar_posicao_musica(tv_rep, 'descer')
+        self.view.bGerar['command'] = self.gerar
+
+    def gerar(self):
+        self.docx.font_configs('Arial', 30)
+        self.docx.paragraph_configs()
+        for i in self.view.tv_repertorio.get_children():
+            musica = self.view.tv_repertorio.item(i)['values']
+            self.docx.escrever_linha(f'{musica[0]}\t{musica[2]}')
+        self.docx.salvar('teste')
 
     def botoes_normal(self):
         self.view.bAdicionar['state'] = tk.NORMAL
@@ -199,5 +209,6 @@ class Controller:
 if __name__ == '__main__':
     v = View()
     m = Model()
-    c = Controller(v, m)
+    d = Docx()
+    c = Controller(v, m, d)
     v.mainloop()
