@@ -1,6 +1,4 @@
 Adições atuais:
-- TODO: Quando adicionar ao repertório, remover apenas da treeview
-- TODO: Pegar música da treeview e não do arquivo
 - TODO: Adicionar ID aos dados
 - TODO: Adicionar scroll as treeviews
 - TODO: Adicionar opção de Ordenação de dados

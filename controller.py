@@ -72,6 +72,10 @@ class Controller:
         for i in tv.selection():
             tv.selection_remove(i)
 
+    def pegar_musica_selecionada(self, tv):
+        selecionado = tv.selection()[0]
+        return tv.item(selecionado)['values']
+
     # Entrada
     def pegar_dados_entrada(self):
         '''Pega os dados escritos na entrada e os retorna'''
@@ -168,8 +172,7 @@ class Controller:
     # Treeview
     def mover_musica(self, event, tv1, tv2, arq1, arq2, tipo):
         for selected_item in tv1.selection():
-            index = tv1.index(selected_item)
-            musica = self.model.retorna_linha_csv(arq1, index+1)
+            musica = self.pegar_musica_selecionada(tv1)
             if tipo == 'adicionar':
                 tv1.delete(selected_item)
                 self.adicionar(arq2, tv2, musica)
