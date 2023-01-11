@@ -45,9 +45,9 @@ class View(tk.Tk):
 
         self.ritmoVar = tk.StringVar()
         tRitmo = ttk.Label(entradas, text="Ritmo")
-        eRitmo = ttk.Entry(entradas, textvariable=self.ritmoVar)
+        self.eRitmo = ttk.Combobox(entradas, textvariable=self.ritmoVar)
         tRitmo.grid(row=4, column=0)
-        eRitmo.grid(row=4, column=1)
+        self.eRitmo.grid(row=4, column=1)
 
         botoes = ttk.Frame(area_de_entrada)
         botoes.grid(row=2, column=0)

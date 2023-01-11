@@ -86,6 +86,14 @@ class Controller:
         selecionado = tv.selection()[0]
         return tv.item(selecionado)['values']
 
+    def pegar_ritmos_do_arquivo(self, nome_do_arquivo):
+        musicas = self.model.ler_csv(self.arquivo_temp)
+        ritmos = list()
+        for musica in musicas[1:]:
+            if not musica[3] in ritmos:
+                ritmos.append(musica[3])
+        return ritmos
+
     # Entrada
     def pegar_dados_entrada(self):
         '''Pega os dados escritos na entrada e os retorna'''
@@ -132,6 +140,7 @@ class Controller:
             self.model.remover_linha_csv(nome_do_arquivo, index+1)
             tv.delete(selected_item)
         self.botoes_normal()
+        self.pegar_dados_entrada() # para resetar as entradas
 
     def limpar(self, nome_do_arquivo, tv):
         '''reseta o arquivo e a treeview'''
@@ -139,6 +148,7 @@ class Controller:
         for i in tv.get_children():
             tv.delete(i)
         self.botoes_normal()
+        self.pegar_dados_entrada() # para resetar as entradas
 
     # Arquivo
     def selecionar(self):
@@ -156,6 +166,8 @@ class Controller:
             self.view.bSalvar['state'] = tk.NORMAL
             for var in self.entradas:
                 var.set('')
+            ritmos = self.pegar_ritmos_do_arquivo(self.arquivo_raiz)
+            self.view.eRitmo['values'] = ritmos
 
     def salvar(self):
         '''Abre uma caixa de diálogo para salvar o arquivo csv'''
