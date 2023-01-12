@@ -18,6 +18,9 @@ class Label(ttk.Label):
             self.texto.set(texto)
         self.config(textvariable=self.texto)
 
+    def set(self, value):
+        self.texto.set(value)
+
 class Entry(ttk.Entry):
     def __init__(self, master, grid=[0, 0], sticky=None):
         self.texto = tk.StringVar()

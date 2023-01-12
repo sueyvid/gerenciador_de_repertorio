@@ -26,7 +26,7 @@ class View(tk.Tk):
         tNome = Label(entradas, text="Título", grid=[1,0])
         self.nomeVar = Entry(entradas, grid=[1,1])
         tArtista = Label(entradas, text="Artísta", grid=[2,0])
-        self.artistaVar = Entry(entradas, grid=[2,1])
+        self.artistaVar = Combobox(entradas, grid=[2,1])
         tTom = Label(entradas, text="Tom", grid=[3,0])
         self.tomVar = Entry(entradas, grid=[3,1])
         tRitmo = Label(entradas, text="Ritmo", grid=[4,0])
@@ -42,7 +42,7 @@ class View(tk.Tk):
         # Área de arquivo
         frame_arquivo = Frame(frame_principal, grid=[0,1])
         titulo_arquivo = Label(frame_arquivo, text="Escolher Arquivo")
-        nome_do_arquivo = Label(frame_arquivo, text='nome do arquivo', grid=[1,0])
+        self.arquivoVar = Label(frame_arquivo, text='nome do arquivo', grid=[1,0])
         self.bSelecionar = Button(frame_arquivo, text='Selecionar Arquivo', grid=[2,0])
         self.bSalvar = Button(frame_arquivo, text='Salvar Arquivo', grid=[3,0])
         self.bSalvar.state(['disabled'])

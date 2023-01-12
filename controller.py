@@ -86,13 +86,19 @@ class Controller:
         selecionado = tv.selection()[0]
         return tv.item(selecionado)['values']
 
-    def pegar_ritmos_do_arquivo(self, nome_do_arquivo):
-        musicas = self.model.ler_csv(self.arquivo_temp)
-        ritmos = list()
+    def pegar_coluna_do_arquivo(self, nome_do_arquivo, coluna):
+        musicas = self.model.ler_csv(nome_do_arquivo)
+        res = list()
         for musica in musicas[1:]:
-            if not musica[3] in ritmos:
-                ritmos.append(musica[3])
-        return ritmos
+            if not musica[coluna] in res:
+                res.append(musica[coluna])
+        return res
+
+    def pegar_dados_combobox(self):
+        artistas = self.pegar_coluna_do_arquivo(self.arquivo_temp, 1)
+        self.view.artistaVar.adicionar_opcoes(artistas)
+        ritmos = self.pegar_coluna_do_arquivo(self.arquivo_temp, 3)
+        self.view.ritmoVar.adicionar_opcoes(ritmos)
 
     # Entrada
     def pegar_dados_entrada(self):
@@ -120,6 +126,7 @@ class Controller:
             else:
                 self.model.adicionar_csv(nome_do_arquivo, musicas)
             tv.insert('', pos, values=musicas)
+        self.pegar_dados_combobox()
 
     def editar(self, nome_do_arquivo, tv, musica):
         '''adiciona músicas no arquivo e na treeview'''
@@ -132,6 +139,7 @@ class Controller:
             tv.set(selecionado, self.view.colunas[i], value=musica[i])
         tv.selection_remove(selecionado)
         self.botoes_normal()
+        self.pegar_dados_combobox()
 
     def remover(self, nome_do_arquivo, tv):
         '''remove música, selecionada pelo usuário, do arquivo e da treeview'''
@@ -141,6 +149,7 @@ class Controller:
             tv.delete(selected_item)
         self.botoes_normal()
         self.pegar_dados_entrada() # para resetar as entradas
+        self.pegar_dados_combobox()
 
     def limpar(self, nome_do_arquivo, tv):
         '''reseta o arquivo e a treeview'''
@@ -149,6 +158,7 @@ class Controller:
             tv.delete(i)
         self.botoes_normal()
         self.pegar_dados_entrada() # para resetar as entradas
+        self.pegar_dados_combobox()
 
     # Arquivo
     def selecionar(self):
@@ -162,12 +172,12 @@ class Controller:
             self.nome_do_arquivo = local_do_arquivo.split('/')[-1]
             self.arquivo_raiz = local_do_arquivo
             self.recupera_dados()
+            self.view.arquivoVar.ativar_textvariable()
             self.view.arquivoVar.set(value=f'nome do arquivo: {self.nome_do_arquivo}')
             self.view.bSalvar['state'] = tk.NORMAL
             for var in self.entradas:
                 var.set('')
-            ritmos = self.pegar_ritmos_do_arquivo(self.arquivo_raiz)
-            self.view.eRitmo['values'] = ritmos
+            self.pegar_dados_combobox()
 
     def salvar(self):
         '''Abre uma caixa de diálogo para salvar o arquivo csv'''
