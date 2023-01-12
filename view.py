@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter_alterada import *
 
 
 class View(tk.Tk):
@@ -10,109 +11,57 @@ class View(tk.Tk):
         self.iniciar()
 
     def iniciar(self):
-        # Area de trabalho
-        tamLetra = 20
-        area_de_trabalho = ttk.Frame(self)
-        area_de_trabalho.pack()
+        # Tema tkinter
+        s = ttk.Style()
+        s.theme_use('clam')
+        # print(s.theme_names())
 
-        # Area de entrada
-        area_de_entrada = ttk.Frame(area_de_trabalho)
-        area_de_entrada.grid(row=0, column=0)
-
-        tTituloEntrada = ttk.Label(area_de_entrada, text="Nova Música")
-        tTituloEntrada.grid(row=0, column=0, sticky='WE')
+        frame_principal = Frame(self)
         
-        entradas = ttk.Frame(area_de_entrada)
-        entradas.grid(row=1, column=0)
+        # Área de entrada
+        frame_entrada = Frame(frame_principal)
+        titulo_entrada = Label(frame_entrada, text="Nova Música")
+        
+        entradas = Frame(frame_entrada, grid=[1,0])
+        tNome = Label(entradas, text="Título", grid=[1,0])
+        self.nomeVar = Entry(entradas, grid=[1,1])
+        tArtista = Label(entradas, text="Artísta", grid=[2,0])
+        self.artistaVar = Entry(entradas, grid=[2,1])
+        tTom = Label(entradas, text="Tom", grid=[3,0])
+        self.tomVar = Entry(entradas, grid=[3,1])
+        tRitmo = Label(entradas, text="Ritmo", grid=[4,0])
+        self.ritmoVar = Combobox(entradas, grid=[4,1])
 
-        self.nomeVar = tk.StringVar()
-        tNome = ttk.Label(entradas, text="Título")
-        eNome = ttk.Entry(entradas, textvariable=self.nomeVar)
-        tNome.grid(row=1, column=0)
-        eNome.grid(row=1, column=1)
-
-        self.artistaVar = tk.StringVar()
-        tArtista = ttk.Label(entradas, text="Artísta")
-        eArtista = ttk.Entry(entradas, textvariable=self.artistaVar)
-        tArtista.grid(row=2, column=0)
-        eArtista.grid(row=2, column=1)
-
-        self.tomVar = tk.StringVar()
-        tTom = ttk.Label(entradas, text="Tom")
-        eTom = ttk.Entry(entradas, textvariable=self.tomVar)
-        tTom.grid(row=3, column=0)
-        eTom.grid(row=3, column=1)
-
-        self.ritmoVar = tk.StringVar()
-        tRitmo = ttk.Label(entradas, text="Ritmo")
-        self.eRitmo = ttk.Combobox(entradas, textvariable=self.ritmoVar)
-        tRitmo.grid(row=4, column=0)
-        self.eRitmo.grid(row=4, column=1)
-
-        botoes = ttk.Frame(area_de_entrada)
-        botoes.grid(row=2, column=0)
-        self.bAdicionar = ttk.Button(botoes, text='Adicionar')
-        self.bAdicionar.grid(row=0, column=0)
-        self.bEditar = ttk.Button(botoes, text='Editar')
-        self.bEditar.grid(row=0, column=1)
-        self.bRemover = ttk.Button(botoes, text='Remover')
-        self.bRemover.grid(row=0, column=2)
-        self.bLimpar = ttk.Button(botoes, text='Limpar')
-        self.bLimpar.grid(row=0, column=3)
+        botoes = Frame(frame_entrada, grid=[2,0])
+        self.bAdicionar = Button(botoes, text='Adicionar', grid=[0,0])
+        self.bEditar = Button(botoes, text='Editar', grid=[0,1])
+        self.bRemover = Button(botoes, text='Remover', grid=[0,2])
+        self.bLimpar = Button(botoes, text='Limpar', grid=[0,3])
         self.bEditar.state(['disabled'])
 
         # Área de arquivo
-        area_de_arquivo = ttk.Frame(area_de_trabalho)
-        area_de_arquivo.grid(row=0, column=1)
-        tTituloArquivo = ttk.Label(area_de_arquivo, text="Escolher Arquivo")
-        tTituloArquivo.grid(row=0, column=0)
-        self.arquivoVar = tk.StringVar(value='nome do arquivo')
-        nome_do_arquivo = ttk.Label(area_de_arquivo, textvariable=self.arquivoVar)
-        nome_do_arquivo.grid(row=1, column=0)
-        self.bSelecionar = ttk.Button(area_de_arquivo, text='Selecionar Arquivo')
-        self.bSelecionar.grid(row=2, column=0)
-        self.bSalvar = ttk.Button(area_de_arquivo, text='Salvar Arquivo')
-        self.bSalvar.grid(row=3, column=0)
-        s = ttk.Style()
-        # print(s.theme_names())
-        s.theme_use('clam')
+        frame_arquivo = Frame(frame_principal, grid=[0,1])
+        titulo_arquivo = Label(frame_arquivo, text="Escolher Arquivo")
+        nome_do_arquivo = Label(frame_arquivo, text='nome do arquivo', grid=[1,0])
+        self.bSelecionar = Button(frame_arquivo, text='Selecionar Arquivo', grid=[2,0])
+        self.bSalvar = Button(frame_arquivo, text='Salvar Arquivo', grid=[3,0])
         self.bSalvar.state(['disabled'])
 
         # Área treeview
-        tv_frame = ttk.Frame(area_de_trabalho)
-        tv_frame.grid(row=1, column=0, columnspan=2)
+        tv_frame = Frame(frame_principal, grid=[1,0], columnspan=2)
+        self.tv_dados = Treeview(tv_frame, columns=self.colunas, show='headings', sticky='NSWE')
+        self.tv_dados.definir_larguras([200, 150, 100, 100])
+        self.tv_dados.scroll_vertical()
 
-        self.tv_dados = ttk.Treeview(tv_frame, columns=self.colunas, show='headings')
-        for i in self.colunas:
-            self.tv_dados.heading(i, text=i)
-        larguras = [200, 150, 100, 100]
-        for i, v in enumerate(self.colunas):
-            self.tv_dados.column(v, width=larguras[i])
-        self.tv_dados.grid(row=0, column=0, sticky='NSWE')
+        self.tv_repertorio = Treeview(tv_frame, grid=[0,2], columns=self.colunas, show='headings', sticky='NSWE')
+        self.tv_repertorio.definir_larguras([200, 150, 100, 100])
+        self.tv_repertorio.scroll_vertical()
 
-        sb_y = ttk.Scrollbar(tv_frame, orient=tk.VERTICAL, command=self.tv_dados.yview)
-        self.tv_dados.configure(yscroll=sb_y.set)
-        sb_y.grid(row=0, column=1, sticky='NS')
-
-        self.tv_repertorio = ttk.Treeview(tv_frame, columns=self.colunas, show='headings')
-        for i in self.colunas:
-            self.tv_repertorio.heading(i, text=i)
-        for i, v in enumerate(self.colunas):
-            self.tv_repertorio.column(v, width=larguras[i])
-        self.tv_repertorio.grid(row=0, column=2, sticky='NSWE')
-
-        sb_y = ttk.Scrollbar(tv_frame, orient=tk.VERTICAL, command=self.tv_repertorio.yview)
-        self.tv_repertorio.configure(yscroll=sb_y.set)
-        sb_y.grid(row=0, column=3, sticky='NS')
-
-        modificacoes_frame = ttk.Frame(area_de_trabalho)
-        modificacoes_frame.grid(row=2, column=0, columnspan=2)
-        self.bSubir = ttk.Button(modificacoes_frame, text='⬆')
-        self.bSubir.grid(row=0, column=0)
-        self.bDescer = ttk.Button(modificacoes_frame, text='⬇')
-        self.bDescer.grid(row=0, column=1)
-        self.bGerar = ttk.Button(modificacoes_frame, text='Gerar')
-        self.bGerar.grid(row=1, column=0, columnspan=2)
+        # Área de modificações
+        modificacoes_frame = Frame(frame_principal, grid=[2,0], columnspan=2)
+        self.bSubir = Button(modificacoes_frame, text='⬆')
+        self.bDescer = Button(modificacoes_frame, text='⬇', grid=[0,1])
+        self.bGerar = Button(modificacoes_frame, text='Gerar', grid=[1,0], columnspan=2)
 
 if __name__ == "__main__":
     tela = View()
