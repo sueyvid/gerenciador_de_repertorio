@@ -22,17 +22,20 @@ class Label(ttk.Label):
         self.texto.set(value)
 
 class Entry(ttk.Entry):
-    def __init__(self, master, grid=[0, 0], sticky=None):
+    def __init__(self, master, grid=[0, 0], sticky=None, **kwargs):
         self.texto = tk.StringVar()
         super().__init__(master, textvariable=self.texto)
-        self.grid(row=grid[0], column=grid[1], sticky=sticky)
+        self.grid(row=grid[0], column=grid[1], sticky=sticky, **kwargs)
 
     def set(self, texto):
         self.texto.set(texto)
 
+    def font(self, tamanho):
+        self.config(font=('',tamanho))
+
 class Combobox(ttk.Combobox):
     def __init__(self, master, grid=[0, 0], sticky=None):
-        super().__init__(master)
+        super().__init__(master, font=('', 13))
         self.grid(row=grid[0], column=grid[1], sticky=sticky)
 
     def adicionar_opcoes(self, opcoes):
@@ -43,6 +46,9 @@ class Combobox(ttk.Combobox):
 
     def selecionado(self):
         return self.get()
+
+    def font(self, tamanho):
+        self.config(font=('',tamanho))
 
 class Button(ttk.Button):
     def __init__(self, master, text, grid=[0, 0], sticky=None, **kwargs):

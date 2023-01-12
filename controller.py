@@ -16,6 +16,7 @@ class Controller:
                     self.view.ritmoVar]
         self.config_os()
         self.config_botoes()
+        self.config_tamanhos()
 
     def config_os(self):
         self.nome_do_arquivo = ''
@@ -49,6 +50,16 @@ class Controller:
         self.view.bDescer['command'] = lambda: self.mudar_posicao_musica(tv_rep, 'descer')
         self.view.bGerar['command'] = self.gerar
 
+    def config_tamanhos(self):
+        tam = 13
+        self.view.style.configure("TLabel", font=("", tam))
+        self.view.style.configure("TButton", font=("", tam))
+        self.view.style.configure("TEntry", font=("", tam))
+        self.view.style.configure("Treeview", font=("", tam))
+        self.view.style.configure("TCombobox", font=("", tam))
+        for var in self.entradas:
+            var.font(tam)
+
     def gerar(self):
         self.docx.font_configs('Arial', 30)
         self.docx.paragraph_configs()
@@ -60,10 +71,12 @@ class Controller:
     def botoes_normal(self):
         self.view.bAdicionar['state'] = tk.NORMAL
         self.view.bEditar['state'] = tk.DISABLED
+        self.view.bRemover['state'] = tk.DISABLED
     
     def botoes_editando(self):
         self.view.bAdicionar['state'] = tk.DISABLED
         self.view.bEditar['state'] = tk.NORMAL
+        self.view.bRemover['state'] = tk.NORMAL
 
     def selecao(self, e):
         if not self.view.tv_dados.selection():

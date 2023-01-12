@@ -15,6 +15,7 @@ class View(tk.Tk):
         s = ttk.Style()
         s.theme_use('clam')
         # print(s.theme_names())
+        self.style = ttk.Style()
 
         frame_principal = Frame(self)
         
@@ -24,13 +25,13 @@ class View(tk.Tk):
         
         entradas = Frame(frame_entrada, grid=[1,0])
         tNome = Label(entradas, text="Título", grid=[1,0])
-        self.nomeVar = Entry(entradas, grid=[1,1])
+        self.nomeVar = Entry(entradas, grid=[1,1], sticky='W')
         tArtista = Label(entradas, text="Artísta", grid=[2,0])
-        self.artistaVar = Combobox(entradas, grid=[2,1])
+        self.artistaVar = Combobox(entradas, grid=[2,1], sticky='W')
         tTom = Label(entradas, text="Tom", grid=[3,0])
-        self.tomVar = Entry(entradas, grid=[3,1])
+        self.tomVar = Entry(entradas, grid=[3,1], sticky='W')
         tRitmo = Label(entradas, text="Ritmo", grid=[4,0])
-        self.ritmoVar = Combobox(entradas, grid=[4,1])
+        self.ritmoVar = Combobox(entradas, grid=[4,1], sticky='W')
 
         botoes = Frame(frame_entrada, grid=[2,0])
         self.bAdicionar = Button(botoes, text='Adicionar', grid=[0,0])
@@ -38,6 +39,7 @@ class View(tk.Tk):
         self.bRemover = Button(botoes, text='Remover', grid=[0,2])
         self.bLimpar = Button(botoes, text='Limpar', grid=[0,3])
         self.bEditar.state(['disabled'])
+        self.bRemover.state(['disabled'])
 
         # Área de arquivo
         frame_arquivo = Frame(frame_principal, grid=[0,1])
